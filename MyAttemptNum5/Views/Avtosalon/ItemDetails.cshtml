@@ -1,0 +1,58 @@
+﻿@model MyAttemptNum5.Models.Automobile
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_Layout";
+}
+
+    <h1> Описание автомобиля: </h1>
+<div class="container px-4 py-5">
+    <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-5">
+        <div class="col">
+                @{
+                    var imgPath = "/Images/" + Model.IdA + ".png";
+                }
+                <img class="card-img" src="@imgPath" />
+            </div>
+
+
+        <div class="col">
+            <div class="table">
+
+            <table>
+                <tr>
+                    <td>Id: </td>
+                    <td>
+                        @Model.IdA
+                    </td>
+                </tr>
+                <tr>
+                    <td>Модель: </td>
+                    <td>
+                        @Model.Model
+                    </td>
+                </tr>
+                <tr>
+                    <td>Дата выпуска:</td>
+                    <td>@Model.ReleaseDate</td>
+                </tr>
+                <tr>
+                    <td>Цвет:</td>
+                    <td>@Model.Color</td>
+                </tr>
+                <tr>
+                    <td>Количество в наличии:</td>
+                    <td>@Model.KolVo</td>
+                </tr>
+                <tr>
+                    <td>Стоимость:</td>
+                    <td>@Model.Price</td>
+                </tr>
+
+            </table>
+            </div>
+        </div>
+    </div>
+            </div>
+
+

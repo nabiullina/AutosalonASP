@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "List";
+    Layout = "_Layout";
+    int i = 0;
+}
+
+    <h1>Доступные модели</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Модель</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in Model)
+        {
+            var image_path = "";
+            image_path = @"/Images/" + x.IdA + ".png";
+            if (i % 2 == 0)
+            {
+                <tr>
+                    <td>
+                        <a href="~/Avtosalon/ItemDetails/@x.IdA">
+                            <img src="@image_path" alt="Sample Image" width="400px" />
+                        </a>
+                    </td>
+
+                    <td>@x.Model</td>
+                    <td>@x.Price</td>
+                </tr>
+
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        <a href="~/Avtosalon/ItemDetails/@x.IdA">
+                            <img src="@image_path" alt="Sample Image" width="400px" />
+                        </a>
+                    </td>
+                    <td>@x.Model</td>
+                    <td>@x.Price</td>
+                </tr>
+
+            }
+            i++;
+        }
+    </tbody>
+    </table>
+

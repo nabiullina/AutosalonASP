@@ -1,0 +1,75 @@
+﻿@{ 
+    ViewData["Title"] = "FeedBack"; 
+} 
+@{
+    Layout = "_layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/style.css" rel="stylesheet" />
+</head>
+<body>
+    
+    <div class="container px-4 py-5" id="custom-cards">
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+            <div class="col">
+                <div class="card rounded-4 shadow-lg" style="width: 20rem;">
+                    <img src="~/Images/feedbackicon.png" class="card-img-top" alt="..." style="width: 80%; margin:auto; padding-top: 2rem;">
+                    <div class="card-body">
+                <h5 class="card-title">Шамсутдинов Амир</h5>
+                    <h6 class="cart-title">Porsche Cayenne S</h6>
+                    <hr/>
+                    <p class="card-text">
+                        Это машина для тех, кто любит скорость и безопасность, качество, надежность и комфорт.
+                        Сочетание внедорожных качеств и спортивного характера дарит истинное удовольствие от управления этим авто!
+                        За несколько лет владения этой машиной проблем не было никаких.
+                        В общем Каенчиком очень довольны. После Porsche вряд ли захочется чего-то другого!
+                        Хороших Вам машин и безопасных дорог!.
+                    </p>
+                        <a asp-action="AvtosalonList" asp-controller="Avtosalon" class="btn btn-primary">Go to cars</a>
+                   </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-4 shadow-lg" style="width: 20rem;">
+                    <img src="~/Images/feedbackicon.png" class="card-img-top" alt="..." style="width: 80%; margin:auto; padding-top: 2rem;">
+                    <div class="card-body">
+                <h5 class="card-title">Шамсутдинов Амир</h5>
+                    <h6 class="cart-title">Porsche Cayenne S</h6>
+                    <hr/>
+                    <p class="card-text">
+                        Это машина для тех, кто любит скорость и безопасность, качество, надежность и комфорт.
+                        Сочетание внедорожных качеств и спортивного характера дарит истинное удовольствие от управления этим авто!
+                        За несколько лет владения этой машиной проблем не было никаких.
+                        В общем Каенчиком очень довольны. После Porsche вряд ли захочется чего-то другого!
+                        Хороших Вам машин и безопасных дорог!.
+                    </p>
+                        <a asp-action ="AvtosalonList" asp-controller="Avtosalon" class="btn btn-primary">Go to cars</a>
+                   </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-4 shadow-lg" style="width: 20rem;">
+                    <img src="~/Images/feedbackicon.png" class="card-img-top" alt="..." style="width: 80%; margin:auto; padding-top: 2rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Шамсутдинов Амир</h5>
+                        <h6 class="cart-title">Porsche Cayenne S</h6>
+                        <hr />
+                        <p class="card-text">
+                            Это машина для тех, кто любит скорость и безопасность, качество, надежность и комфорт.
+                            Сочетание внедорожных качеств и спортивного характера дарит истинное удовольствие от управления этим авто!
+                            За несколько лет владения этой машиной проблем не было никаких.
+                            В общем Каенчиком очень довольны. После Porsche вряд ли захочется чего-то другого!
+                            Хороших Вам машин и безопасных дорог!.
+                        </p>
+                        <a asp-action="AvtosalonList" asp-controller="Avtosalon" class="btn btn-primary">Go to cars</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\MyAttemptNum5.props" />
+</Project>
