@@ -26,8 +26,6 @@ public partial class AvtosalonContext : DbContext
 
     public virtual DbSet<Komplektaciya> Komplektaciyas { get; set; }
 
-    public virtual DbSet<Manager> Managers { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Avtosalon;Username=postgres;Password=123");
@@ -68,6 +66,7 @@ public partial class AvtosalonContext : DbContext
 
             entity.Property(e => e.IdB)
                 .HasPrecision(5)
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("id_b");
             entity.Property(e => e.Fio)
                 .HasMaxLength(50)
@@ -76,6 +75,12 @@ public partial class AvtosalonContext : DbContext
                 .HasMaxLength(11)
                 .IsFixedLength()
                 .HasColumnName("phone_number");
+            entity.Property(e => e.Email)
+                .HasMaxLength(20)
+                .HasColumnName("email");
+            entity.Property(e => e.Password)
+                .HasMaxLength(20)
+                .HasColumnName("password");
         });
 
         modelBuilder.Entity<Dogovor>(entity =>
@@ -93,17 +98,13 @@ public partial class AvtosalonContext : DbContext
             entity.Property(e => e.IdB)
                 .HasPrecision(5)
                 .HasColumnName("id_b");
-            entity.Property(e => e.IdM)
-                .HasPrecision(5)
-                .HasColumnName("id_m");
 
             entity.HasOne(d => d.IdBNavigation).WithMany(p => p.Dogovors)
                 .HasForeignKey(d => d.IdB)
                 .HasConstraintName("fk_b");
-
-            entity.HasOne(d => d.IdMNavigation).WithMany(p => p.Dogovors)
-                .HasForeignKey(d => d.IdM)
-                .HasConstraintName("fk_m");
+            entity.HasOne(d => d.Ekzemplyar).WithOne(e => e.IdDNavigation)
+                .HasForeignKey<Ekzemplyar>(d => d.VinKod)
+                .HasConstraintName("fk_e");
         });
 
         modelBuilder.Entity<Ekzemplyar>(entity =>
@@ -126,8 +127,8 @@ public partial class AvtosalonContext : DbContext
                 .HasForeignKey(d => d.IdA)
                 .HasConstraintName("fk_avt");
 
-            entity.HasOne(d => d.IdDNavigation).WithMany(p => p.Ekzemplyars)
-                .HasForeignKey(d => d.IdD)
+            entity.HasOne(d => d.IdDNavigation).WithOne(p => p.Ekzemplyar)
+                .HasForeignKey<Dogovor>(e=>e.IdD)
                 .HasConstraintName("fk_d");
         });
 
@@ -150,49 +151,28 @@ public partial class AvtosalonContext : DbContext
                 .HasPrecision(6)
                 .HasColumnName("price");
 
-            entity.HasMany(d => d.IdAs).WithMany(p => p.IdKs)
+            entity.HasMany(d => d.IdEs).WithMany(p => p.IdKs)
                 .UsingEntity<Dictionary<string, object>>(
                     "KomplektaciyaAutomobile",
-                    r => r.HasOne<Automobile>().WithMany()
-                        .HasForeignKey("IdA")
+                    r => r.HasOne<Ekzemplyar>().WithMany()
+                        .HasForeignKey("IdE")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("fk_a"),
+                        .HasConstraintName("fk_e"),
                     l => l.HasOne<Komplektaciya>().WithMany()
                         .HasForeignKey("IdK")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("fk_k"),
                     j =>
                     {
-                        j.HasKey("IdK", "IdA").HasName("pr_ak");
-                        j.ToTable("komplektaciya_automobile");
-                        j.IndexerProperty<decimal>("IdK")
+                        j.HasKey("IdK", "IdE").HasName("pr_ek");
+                        j.ToTable("komplektaciya_ekzemplyar");
+                        j.IndexerProperty<long>("IdK")
                             .HasPrecision(5)
                             .HasColumnName("id_k");
-                        j.IndexerProperty<decimal>("IdA")
+                        j.IndexerProperty<long>("IdE")
                             .HasPrecision(5)
-                            .HasColumnName("id_a");
+                            .HasColumnName("id_e");
                     });
-        });
-
-        modelBuilder.Entity<Manager>(entity =>
-        {
-            entity.HasKey(e => e.IdM).HasName("manager_pkey");
-
-            entity.ToTable("manager");
-
-            entity.Property(e => e.IdM)
-                .HasPrecision(5)
-                .HasColumnName("id_m");
-            entity.Property(e => e.Age)
-                .HasPrecision(2)
-                .HasColumnName("age");
-            entity.Property(e => e.Fio)
-                .HasMaxLength(50)
-                .HasColumnName("fio");
-            entity.Property(e => e.PhoneNumber)
-                .HasMaxLength(11)
-                .IsFixedLength()
-                .HasColumnName("phone_number");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -10694,11 +10694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\source\\repos\\MyAttemptNum5\\MyAttemptNum5\\MyAttemptNum5.csproj",
+      "projectUniqueName": "D:\\source\\repos\\AutoASP\\MyAttemptNum5\\MyAttemptNum5.csproj",
       "projectName": "MyAttemptNum5",
-      "projectPath": "D:\\source\\repos\\MyAttemptNum5\\MyAttemptNum5\\MyAttemptNum5.csproj",
+      "projectPath": "D:\\source\\repos\\AutoASP\\MyAttemptNum5\\MyAttemptNum5.csproj",
       "packagesPath": "C:\\Users\\Azalia\\.nuget\\packages\\",
-      "outputPath": "D:\\source\\repos\\MyAttemptNum5\\MyAttemptNum5\\obj\\",
+      "outputPath": "D:\\source\\repos\\AutoASP\\MyAttemptNum5\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Azalia\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -2,35 +2,35 @@
 using MyAttemptNum5.Models;
 using MyAttemptNum5.Controllers;
 using System.Diagnostics;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyAttemptNum5.Controllers
 {
     public class AvtosalonController : Controller
     {
         private readonly AvtosalonContext _db;
-        public AvtosalonController(AvtosalonContext db) => _db = db;
 
+        public AvtosalonController(AvtosalonContext context)
+        {
+            _db = context;
+        }
+
+        public async Task<IActionResult> BuyerInfo(string email)
+        {
+            var buyer = await _db.Buyers.Where(b=>b.Email==email).FirstOrDefaultAsync();
+            return View(buyer);
+        }
+            
         public IActionResult AvtosalonList()
         {
             IEnumerable<Automobile> AutomobileList = _db.Automobiles.ToList();
-            //List<Automobile> ClearAutomobileList = new List<Automobile>();
-            //foreach (var x in AutomobileList)
-            //{
-            //    string temp = x.Model;
-            //    bool exist = false;
-            //    foreach (var y in ClearAutomobileList)
-            //    {
-            //        if (y.Model == x.Model)
-            //            exist = true;
-            //    }
-            //    if (exist == false)
-            //        ClearAutomobileList.Add(x);
-            //}
+            
             return View(AutomobileList);
         }
 
-        public IActionResult ItemDetails(int id)
+        public IActionResult ItemDetails(long id)
         {
             IEnumerable<Automobile> AutomobileList = _db.Automobiles.ToList();
 
@@ -43,54 +43,6 @@ namespace MyAttemptNum5.Controllers
             return Redirect("https://vk.com/id364791065");
         }
 
-        [HttpPost]
-        public IActionResult Register(RegistrationModel model) {
-            if (string.IsNullOrEmpty(model.Login)) {
-                ModelState.AddModelError(nameof(model.Login), "Введите логин");
-            } else
-                if (model.Login.Length > 50) {
-                ModelState.AddModelError(nameof(model.Login),
-        "Значение не должно превышать 50 символов");
-            }
-            if (string.IsNullOrEmpty(model.Email)) {
-                ModelState.AddModelError(nameof(model.Email), "Введите email");
-            } else
-                if (!Regex.IsMatch(model.Email, @"^(?![_.-])((?![_.-][_.-])[a-zA-Z\d_.-]){0,63}[a-zA-Z\d]@((?!-)((?!--)[a-zA-Z\d-]){0,63}[a-zA-Z\d]\.){1,2}([a-zA-Z]{2,14}\.)?[a-zA-Z]{2,14}$")) {
-                ModelState.AddModelError(nameof(model.Email),"Неверный формат адреса");
-            }
-            if (string.IsNullOrEmpty(model.Password)) {
-                ModelState.AddModelError(nameof(model.Password),
-        "Введите пароль");
-            }
-            if (string.IsNullOrEmpty(model.Password2)) {
-                ModelState.AddModelError(nameof(model.Password2),
-              "Подтвердите пароль");
-            }
-            if (model.Password != model.Password2) {
-                ModelState.AddModelError(nameof(model.Password2),
-        "Не совпадают пароли");
-            }
-            if (model.Accept == false) {
-                ModelState.AddModelError(nameof(model.Accept), "Необходимо согласиться с условиями");
-            }
-            if (ModelState.IsValid) {
-                Debug.WriteLine(model.Login);
-                Debug.WriteLine(model.Password);
-                Debug.WriteLine(model.Password2);
-                Debug.WriteLine(model.Email);
-                Debug.WriteLine(model.Accept);
-                return View("SuccessfulRegistration");
-            } else {
-                return View(model);
-            }
-        }
-        
-        [MyException]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
         public IActionResult Agreement()
         {
             FileStream fs = System.IO.File.OpenRead("Data/TermsOfUse.pdf");
@@ -100,6 +52,52 @@ namespace MyAttemptNum5.Controllers
         {
             return View();
 
+        }
+
+        public async Task<IActionResult> SelectEkzemplyar(long IdA)
+        {
+            var ekzemplyars = await _db.Ekzemplyars.Include("IdKs").Where(e => e.IdA == IdA).Where(e=>e.IdD==null).ToListAsync();
+            var model = new List<MultiModel>();
+            foreach (var item in ekzemplyars)
+            {
+                
+                model.Add(new MultiModel {Ekzemplyar = item});
+            }
+            return View(model);
+        }
+        
+        // GET
+        public async Task<IActionResult> Purchase(string VinKod)
+        {
+            var buyer = await _db.Buyers.Where(b => b.Email == User.Identity.Name).FirstOrDefaultAsync();
+            var ekzemplyar = await _db.Ekzemplyars.FindAsync(VinKod);
+            var model = new MultiModel
+            {
+                Buyer = buyer,
+                Ekzemplyar = ekzemplyar
+            };
+            return View(model);
+        }
+        
+        // POST
+        [HttpPost, ActionName("Purchase")]
+        public async Task<IActionResult> PurchaseConfirmed(string VinKod)
+        {
+            var buyer = await _db.Buyers.Where(b => b.Email == User.Identity.Name).FirstOrDefaultAsync();
+            var dogovor = new Dogovor()
+            {
+                DateOfExecution = DateTime.Now,
+                IdB = buyer.IdB,
+                VinKod = VinKod
+            };
+            _db.Add(dogovor);
+            _db.SaveChanges();
+            var ekzemplyar = await _db.Ekzemplyars.FindAsync(VinKod);
+            var dogovorFromDb = await _db.Dogovors.Where(d => d.VinKod == VinKod).FirstOrDefaultAsync();
+            ekzemplyar.IdD = dogovorFromDb.IdD;
+            _db.Update(ekzemplyar);
+            _db.SaveChanges();
+            return View();
         }
     }
 }

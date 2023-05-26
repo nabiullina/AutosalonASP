@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,11 @@ namespace MyAttemptNum5
         {
             services.AddMvc();
             services.AddDbContext<AvtosalonContext>();
-            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,6 +41,9 @@ namespace MyAttemptNum5
             }
             app.UseStaticFiles();
 
+            app.UseAuthentication();    // аутентификация
+            app.UseAuthorization();     // авторизация
+            
             app.UseRouting();
 
             app.UseAuthorization();
@@ -44,7 +52,7 @@ namespace MyAttemptNum5
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Avtosalon}/{action=AvtosalonList}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }

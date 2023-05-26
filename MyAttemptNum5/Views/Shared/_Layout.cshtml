@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href = "~/css/bootstrap.min.css"/>
+    <title>@ViewData["Title"] - Porsche</title>
+    <link rel="stylesheet" href="/css/site.css"/>
 </head>
 <body>
     <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Porsche</a>
+            <a class="navbar-brand mx-4" asp-action="AvtosalonList" asp-controller="Avtosalon">Porsche</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" _mstaria-label="320099">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -26,10 +28,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="~/Avtosalon/Creator">Creator</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="Register" asp-controller="Avtosalon">Registration</a>
-                    </li>
                 </ul>
+                 <form class="form-inline me-5 my-4 my-lg-0">
+                      @if (!User.Identity.IsAuthenticated)
+                      {
+                          <a class="btn btn-outline-light my-2 my-sm-0" asp-action="Login" asp-controller="Account">Войти</a>
+                      }
+                      else
+                      {
+                          <a class="nav-item" asp-action="BuyerInfo" asp-route-email="@User.Identity.Name" asp-controller="Avtosalon"><img style="width: 50px" src="~/Images/user.png"/></a>
+                          <a class="btn btn-outline-light my-2 my-sm-0" asp-action="Logout" asp-controller="Account">Выйти</a>
+                      }
+                    </form>
             </div>
         </div>
     </nav>

@@ -5,7 +5,7 @@ namespace MyAttemptNum5.Models;
 
 public partial class Automobile
 {
-    public decimal IdA { get; set; }
+    public long IdA { get; set; }
 
     public string Model { get; set; } = null!;
 
@@ -13,11 +13,10 @@ public partial class Automobile
 
     public string Color { get; set; } = null!;
 
-    public decimal KolVo { get; set; }
+    public long KolVo { get; set; }
 
-    public decimal Price { get; set; }
+    public long Price { get; set; }
 
     public virtual ICollection<Ekzemplyar> Ekzemplyars { get; set; } = new List<Ekzemplyar>();
 
-    public virtual ICollection<Komplektaciya> IdKs { get; set; } = new List<Komplektaciya>();
 }
