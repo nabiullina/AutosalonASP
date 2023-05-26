@@ -13,5 +13,5 @@ public partial class Komplektaciya
 
     public long? Price { get; set; }
 
-    public virtual ICollection<Ekzemplyar> IdEs { get; set; } = new List<Ekzemplyar>();
+    public virtual ICollection<KomplektaciyaEkzemplyar> KomplektaciyaEkzemplyars { get; set; } = new List<KomplektaciyaEkzemplyar>();
 }

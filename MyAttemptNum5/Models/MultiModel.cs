@@ -7,4 +7,5 @@ public class MultiModel
     public Dogovor? Dogovor { get; set; }
     public Ekzemplyar? Ekzemplyar { get; set; }
     public Komplektaciya? Komplektaciya { get; set; }
+    public KomplektaciyaEkzemplyar? KomplektaciyaEkzemplyar { get; set; }
 }

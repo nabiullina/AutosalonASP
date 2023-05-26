@@ -40,6 +40,7 @@ namespace MyAttemptNum5
                 app.UseExceptionHandler("/Avtosalon/Error");
             }
             app.UseStaticFiles();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             app.UseAuthentication();    // аутентификация
             app.UseAuthorization();     // авторизация

@@ -17,9 +17,10 @@ namespace MyAttemptNum5.Controllers
             _db = context;
         }
 
+        [Route("Avtosalon/BuyerInfo/{email}")]
         public async Task<IActionResult> BuyerInfo(string email)
         {
-            var buyer = await _db.Buyers.Where(b=>b.Email==email).FirstOrDefaultAsync();
+            var buyer = await _db.Buyers.Include("Dogovors.Ekzemplyar.IdANavigation").Include("Dogovors.Ekzemplyar.KomplektaciyaEkzemplyars.Komplektaciya").Where(b=>b.Email==email).FirstOrDefaultAsync();
             return View(buyer);
         }
             
@@ -42,12 +43,7 @@ namespace MyAttemptNum5.Controllers
         {
             return Redirect("https://vk.com/id364791065");
         }
-
-        public IActionResult Agreement()
-        {
-            FileStream fs = System.IO.File.OpenRead("Data/TermsOfUse.pdf");
-            return File(fs, "application/pdf");
-        }
+        
         public IActionResult FeedBack()
         {
             return View();
@@ -56,13 +52,14 @@ namespace MyAttemptNum5.Controllers
 
         public async Task<IActionResult> SelectEkzemplyar(long IdA)
         {
-            var ekzemplyars = await _db.Ekzemplyars.Include("IdKs").Where(e => e.IdA == IdA).Where(e=>e.IdD==null).ToListAsync();
+            var ekzemplyars = await _db.Ekzemplyars.Include("KomplektaciyaEkzemplyars.Komplektaciya").Include("IdANavigation").Where(e=> !e.IdD.HasValue).Where(e => e.IdA == IdA).ToListAsync();
+            
             var model = new List<MultiModel>();
             foreach (var item in ekzemplyars)
             {
-                
                 model.Add(new MultiModel {Ekzemplyar = item});
             }
+            
             return View(model);
         }
         
@@ -70,7 +67,7 @@ namespace MyAttemptNum5.Controllers
         public async Task<IActionResult> Purchase(string VinKod)
         {
             var buyer = await _db.Buyers.Where(b => b.Email == User.Identity.Name).FirstOrDefaultAsync();
-            var ekzemplyar = await _db.Ekzemplyars.FindAsync(VinKod);
+            var ekzemplyar = await _db.Ekzemplyars.Include("IdANavigation").Include("KomplektaciyaEkzemplyars.Komplektaciya").Where(e=>e.VinKod==VinKod).FirstOrDefaultAsync();
             var model = new MultiModel
             {
                 Buyer = buyer,
@@ -81,9 +78,9 @@ namespace MyAttemptNum5.Controllers
         
         // POST
         [HttpPost, ActionName("Purchase")]
-        public async Task<IActionResult> PurchaseConfirmed(string VinKod)
+        public async Task<IActionResult> PurchaseConfirmed(string VinKod) 
         {
-            var buyer = await _db.Buyers.Where(b => b.Email == User.Identity.Name).FirstOrDefaultAsync();
+            var buyer = await _db.Buyers.Include("Dogovors.Ekzemplyar.IdANavigation").Include("Dogovors.Ekzemplyar.KomplektaciyaEkzemplyars.Komplektaciya").Where(b => b.Email == User.Identity.Name).FirstOrDefaultAsync();
             var dogovor = new Dogovor()
             {
                 DateOfExecution = DateTime.Now,
@@ -97,7 +94,7 @@ namespace MyAttemptNum5.Controllers
             ekzemplyar.IdD = dogovorFromDb.IdD;
             _db.Update(ekzemplyar);
             _db.SaveChanges();
-            return View();
+            return Redirect($"BuyerInfo/{User.Identity.Name}");
         }
     }
 }

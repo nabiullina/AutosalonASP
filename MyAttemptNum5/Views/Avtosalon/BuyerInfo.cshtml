@@ -3,5 +3,40 @@
 @{ 
     ViewData["Title"] = "Buyer"; 
 } 
+@{
+    string img_path = "";
+}
+<div class="text-body mt-5">
+    <h3> @Html.DisplayFor(item => Model.Fio) </h3>
+    <hr/>
+    <h5> Машины </h5>
+</div>
 
-<h1> @Html.DisplayFor(item => Model.Fio) </h1>
+<div class="container px-4" id="custom-cards">
+    <div class="row row-cols-2 row-cols-lg-2 align-items-stretch g-4 py-5">
+        @foreach (var item in Model.Dogovors)
+        {
+            img_path = "/Images/" + item.Ekzemplyar.IdA + ".png";
+            <div class="col">
+                <div class="card rounded-4 shadow-lg">
+                    <img src="@img_path" class="card-img-top" alt="..." style="width: 80%; margin:auto; padding-top: 2rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Ekzemplyar.IdANavigation.Model</h5>
+                        <h6 class="cart-title">@item.Ekzemplyar.IdANavigation.Color</h6>
+                        <hr/>
+                        <p class="card-text">
+                            <ul>
+                                @foreach (var kompItem in item.Ekzemplyar.KomplektaciyaEkzemplyars)
+                                {
+                                    <li>
+                                        @kompItem.Komplektaciya.NameK @kompItem.Komplektaciya.Opisanie
+                                    </li>
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

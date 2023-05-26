@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<MultiModel>
-
+@{
+    decimal? price = 0;
+} 
 <table class="table">
     <thead>
     <tr>
@@ -11,27 +13,43 @@
     </tr>
     </thead>
     <tbody>
-    @{
-        decimal price = 0;
-    }
     @foreach (var item in Model)
     {
+        price = item.Ekzemplyar.IdANavigation.Price;
         <tr>
-            <td>@Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Model)</td>
-        </tr>
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Color)</td>
-        </tr>
-        <tr>
-            @foreach (var itemKomp in item.Ekzemplyar.IdKs)
+        <td>
+            @Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Model)
+        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Color)
+            </td>
+                <td>
+            <ul>
+            @foreach (var itemKomp in item.Ekzemplyar.KomplektaciyaEkzemplyars)
             {
-                <td>@Html.DisplayFor(modelItem => itemKomp.Opisanie)</td>
-                price += itemKomp.Price
+                <li>
+                    @Html.DisplayFor(modelItem => itemKomp.Komplektaciya.NameK)
+                    @Html.DisplayFor(modelItem => itemKomp.Komplektaciya.Opisanie)
+                </li>
+                price += itemKomp.Komplektaciya.Price;
             }
-        </tr>
-        <tr>
-            @Html.DisplayFor(modelItem => item.Automobile)
-        </tr>
+            </ul>
+                </td>
+        <td>
+            @Html.DisplayFor(modelItem => price)
+        </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-action="Purchase" asp-route-VinKod="@item.Ekzemplyar.VinKod" class="btn-outline-dark">Купить</a>
+                    
+                }
+                else
+                {
+                    <a asp-action="Login" asp-controller="Account">Купить</a>
+                }
+            </td>
+    </tr>
     }
     </tbody>
 </table>

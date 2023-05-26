@@ -15,6 +15,6 @@ public partial class Ekzemplyar
 
     public virtual Dogovor? IdDNavigation { get; set; }
     
-    public virtual ICollection<Komplektaciya> IdKs { get; set; } = new List<Komplektaciya>();
+    public virtual ICollection<KomplektaciyaEkzemplyar> KomplektaciyaEkzemplyars { get; set; } = new List<KomplektaciyaEkzemplyar>();
 
 }

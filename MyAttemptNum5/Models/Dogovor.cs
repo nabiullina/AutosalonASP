@@ -13,7 +13,7 @@ public partial class Dogovor
     
     public string VinKod { get; set; }
 
-    public virtual Ekzemplyar Ekzemplyar { get; set; }
+    public virtual Ekzemplyar? Ekzemplyar { get; set; }
 
     public virtual Buyer? IdBNavigation { get; set; }
 }
