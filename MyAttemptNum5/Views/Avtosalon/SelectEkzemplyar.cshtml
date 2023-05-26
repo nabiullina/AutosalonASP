@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MultiModel>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Модель</th>
+        <th>Цвет</th>
+        <th>Комплектация</th>
+        <th>Стоимость</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        decimal price = 0;
+    }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Model)</td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Ekzemplyar.IdANavigation.Color)</td>
+        </tr>
+        <tr>
+            @foreach (var itemKomp in item.Ekzemplyar.IdKs)
+            {
+                <td>@Html.DisplayFor(modelItem => itemKomp.Opisanie)</td>
+                price += itemKomp.Price
+            }
+        </tr>
+        <tr>
+            @Html.DisplayFor(modelItem => item.Automobile)
+        </tr>
+    }
+    </tbody>
+</table>
