@@ -1,12 +1,24 @@
 ﻿@{
     ViewData["Title"] = "List";
     Layout = "_Layout";
-    int i = 0;
 }
 
 <div class="text-body mt-5 mb-2">
     <h1>Модельный ряд</h1>
 </div>
+<form method="get">
+    <div class="row">
+        <div class="form-inline form-group col">
+            <label class="control-label">От:
+                <input type="number" value="@ViewBag.minPrice" name="minPrice" class="form-control"/>
+            </label>
+            <label class="control-label">До:
+                            <input type="number" value="@ViewBag.maxPrice" name="maxPrice" class="form-control"/>
+                        </label>
+        </div>
+    </div>
+    <input type="submit" value="Фильтр" class="btn btn-primary"/>
+</form>
 <table class="table table-hover">
     <thead>
     <tr>

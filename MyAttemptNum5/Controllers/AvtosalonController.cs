@@ -24,10 +24,29 @@ namespace MyAttemptNum5.Controllers
             return View(buyer);
         }
             
-        public IActionResult AvtosalonList()
+        public IActionResult AvtosalonList(decimal? minPrice, decimal? maxPrice)
         {
-            IEnumerable<Automobile> AutomobileList = _db.Automobiles.ToList();
-            
+            if (!minPrice.HasValue)
+            {
+                minPrice = 0;
+            }
+            else
+            {
+                ViewBag.minPrice = minPrice;
+
+            }
+
+            if (!maxPrice.HasValue)
+            {
+                maxPrice = Decimal.MaxValue;
+
+            }
+            else
+            {
+                ViewBag.maxPrice = maxPrice;
+            }
+            minPrice = minPrice.HasValue ? minPrice : 0;
+            IEnumerable<Automobile> AutomobileList = _db.Automobiles.Where(a=>a.Price>=minPrice && a.Price<=maxPrice).ToList();
             return View(AutomobileList);
         }
 

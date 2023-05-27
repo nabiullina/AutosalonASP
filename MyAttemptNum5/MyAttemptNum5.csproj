@@ -25,4 +25,26 @@
     <Folder Include="Views\MultiModel\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Home\**" />
+    <Compile Remove="Controllers\HomeController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\Home\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Home\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Home\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+  </ItemGroup>
+
 </Project>

@@ -18,7 +18,7 @@
         {
             img_path = "/Images/" + item.Ekzemplyar.IdA + ".png";
             <div class="col">
-                <div class="card rounded-4 shadow-lg">
+                <a class="card rounded-4 shadow-lg" asp-action="ItemDetails" asp-route-id="@item.Ekzemplyar.IdA">
                     <img src="@img_path" class="card-img-top" alt="..." style="width: 80%; margin:auto; padding-top: 2rem;">
                     <div class="card-body">
                         <h5 class="card-title">@item.Ekzemplyar.IdANavigation.Model</h5>
@@ -35,7 +35,7 @@
                             </ul>
                         </p>
                     </div>
-                </div>
+                </a>
             </div>
         }
     </div>

@@ -53,7 +53,7 @@ namespace MyAttemptNum5
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}");
+                    pattern: "{controller=Avtosalon}/{action=AvtosalonList}");
             });
         }
     }

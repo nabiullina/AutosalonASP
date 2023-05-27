@@ -32,7 +32,7 @@ public class AccountController : Controller
                 {
                     await Authenticate(model.Email); // аутентификация
  
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("AvtosalonList", "Avtosalon");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
@@ -84,7 +84,7 @@ public class AccountController : Controller
  
                     await Authenticate(model.Email); // аутентификация
  
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("AvtosalonList", "Avtosalon");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
